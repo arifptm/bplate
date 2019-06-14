@@ -1,0 +1,66 @@
+<template>
+	<v-container fluid fill-height class="primary">
+				<v-layout wrap justify-center align-center>					
+						<v-layout row wrap>
+							<v-flex xs12 text-xs-center class="white--text">
+								<h1>Metalika</h1>							  
+							</v-flex>
+								<v-flex xs12 class="white pa-3" >
+									<v-text-field
+									  label="Email"
+									  append-outer-icon="email"			
+									  v-model="credential.username"
+									></v-text-field>
+
+									<v-text-field
+									  label="Password"
+									  append-outer-icon="lock"
+									  v-model="credential.password"
+									  type="password"
+									></v-text-field>
+									<v-flex xs12 text-xs-center>
+									  <v-btn 
+									  color="primary"
+									  @click="login()"
+									  >
+											Login
+										</v-btn>
+									</v-flex> 
+									  
+								</v-flex>
+
+						</v-layout>
+					
+				</v-layout>
+				
+	</v-container>
+</template>
+
+<script>
+	export default{
+		data(){
+			return {
+				credential: {
+					grant_type: "password",
+					client_id: "2",
+					client_secret: "i7V1XVk6YTTJpAGKMZNuAvJTVyXfYFN6voOYuOsH",
+					username: "admin@app.com",
+					password:"12345678"
+				}
+			}
+		},
+
+		created(){
+		},
+
+		methods:{
+			login(){
+				this.axios.post("http://invo.tes/oauth/token", this.credential)
+				.then(res=>{
+					console.log(res.data)
+					this.$store.commit('token', res.data.token_type+' '+res.data.access_token)
+				})
+			}
+		}
+	}
+</script>
