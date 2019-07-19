@@ -1,101 +1,11 @@
 <template>
-  <v-container fluid class="pa-0" style="background-color: #efefef;height:100vh;">
+  <v-container fluid>
     <v-layout row wrap>
       
       <v-flex xs12 >
-        <v-layout row wrap class="box-top">
-          <v-flex>
 
-            <v-container fluid fill-height class="pa-0">
-              <v-layout wrap justify-center align-center>
-                <v-flex class="cpl-2 text-xs-left app-name purple--text text--darken-3">
-                  Papindi <span class="slogan grey--text text--darken-2">Papan Informasi Digital <span class="grey--text">by Jasma Digital</span></span>
-                </v-flex>
-              </v-layout>
-            </v-container>
-
-            
-          </v-flex>
-
-          <v-flex xs4>
-            <v-container fluid fill-height class="pa-0">
-              <v-layout wrap justify-center align-center>
-                <v-flex class="clock text-xs-right cpr-2">
-                  {{ $store.state.clock.format('hh:mm:ss') }} 
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-flex>
-
-        </v-layout>
           
-        
-      </v-flex>
 
-      
-      <v-flex xs12 >
-        <div class="box-center" :style="'height: ' + centerHeight + 'vh'">
-          
-          <v-container fluid fill-height>
-            <v-layout wrap justify-center align-center>
-              <v-layout row wrap>
-                
-                <v-flex style="text-align: center;" >     
-                  <div style="float:left;">
-                      <v-img :max-height="(centerHeight-8)+'vh'" contain :aspect-ratio="16/9"  src="https://via.placeholder.com/1920x1080">
-                      </v-img>
-                  </div>                               
-                  <transition name="jb-slide-left">
-
-                  
-                    <div v-if="shows === true && jumbotrons[jumbotronIndex].image" >
-                      <v-img :max-height="(centerHeight-8)+'vh'" contain :aspect-ratio="16/9"  :src="apiUrl + '/static/jumbotrons/'+ '5d240f21868d1a447414d1f7/'+jumbotrons[jumbotronIndex].image" >
-                      </v-img>
-                    </div>
-
-                    <div v-if="shows === true && jumbotrons[jumbotronIndex].video">
-                    <video-player 
-                      style="background-color: blue;"
-                      class="vjs-custom-skin video"
-                      ref="videoPlayer"
-                      :options="playerOptions"
-                      :playsinline="true"                      
-                    >
-                    </video-player>                     
-                  </div>
-
-
-
-<!--                     <video-player
-                      class="vjs-custom-skin video"
-                      ref="videoPlayer"
-                      :options="playerOptions"
-                      :playsinline="true"
-                      @ended="onPlayerEnded($event)"
-                      @ready="playerReadied"
-                    >
-                    </video-player>  -->
-
-                  
-                  
-                  </transition>
-
-                </v-flex>
-
-                <v-flex xs3 style="text-align: center;" class="pl-2 blue">
-                  <div class="white--text" :style="'font-size:5vh;overflow:hidden; max-height:' + (centerHeight-8)+'vh'"> Aku hanya ingin tenang, aku tidak ingin menang Aku hanya ingin tenangn tenang, aku tidak ingin menang</div>
-                </v-flex>
-              </v-layout>
-            </v-layout>
-          </v-container>
-        
-        </div>
-      </v-flex>
-      
-      <v-flex xs12>
-        <div class="box-bottom purple lighten-5" :style="'height: ' + bottomHeight + 'vh'">
-          Metalika bottom
-        </div>
       </v-flex>
       
     </v-layout>
@@ -110,20 +20,6 @@
   export default {
     components:{ videoPlayer },
     data: () => ({
-      displayed: 0,
-      apiUrl: process.env.VUE_APP_API_URL,
-      sidebarRight: true,
-      header: true,
-      footer: true,
-      jumbotrons: [],
-      jumbotron:{},
-      jumbotronIndex:0,
-      jumbotronDuration: 0,
-      sh: true,
-      centerHeight: 70,
-      bottomHeight: 20,
-      shows:false,
-      playerOptions: {},
 
     }),
 
