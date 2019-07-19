@@ -1,17 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import moment from 'moment'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-  	token:"",
+    appName: process.env.VUE_APP_NAME,
+    user: {},
+    clock: moment()
   },
   
-  mutations: {
-		token (state, payload) {
-    	state.token= payload.token
-  	}
+  mutations: {		
+    mutate(state, payload) {
+      state[payload.property] = payload.with;
+    }
+
 
   },
   actions: {
