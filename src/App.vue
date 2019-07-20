@@ -37,11 +37,16 @@
 
     created(){
       this.menus = [
-        { icon: 'volume_up', title: 'Dashboard', path: ()=>this.logout(), showFor: [ 'all' ] },
-        { icon: 'add', title: 'Account', path: ()=>this.logout(), showFor: [ 'super' ] },
-        { icon: 'lock', title: 'Users', path: ()=>this.logout(), showFor: [ 'super', 'admin' ] },
-        { icon: 'people', title: 'Users', path: ()=>this.$router.push('users'), showFor: [ 'super' ] },
-        { icon: 'exit_to_app', title: 'Logout', path: ()=>this.logout(), showFor: [ 'all' ] },
+        { icon: 'people', title: 'Anggota', path: ()=>this.pushTo('members'), showFor: [ 'all' ] },
+        { icon: 'event', title: 'Pertemuan', path: ()=>this.pushTo('events'), showFor: [ 'all' ] },
+        { icon: 'credit_card', title: 'Pinjaman', path: ()=>this.pushTo('debts'), showFor: [ 'all' ] },
+        { icon: 'attach_money', title: 'Tabungan', path: ()=>this.pushTo('savings'), showFor: [ 'all' ] },
+        { icon: 'assignment', title: 'Laporan', path: ()=>this.pushTo('reports'), showFor: [ 'all' ] },
+        // { icon: 'volume_up', title: 'Dashboard', path: ()=>this.logout(), showFor: [ 'all' ] },
+        // { icon: 'add', title: 'Account', path: ()=>this.logout(), showFor: [ 'super' ] },
+        // { icon: 'lock', title: 'Users', path: ()=>this.logout(), showFor: [ 'super', 'admin' ] },
+        // { icon: 'people', title: 'Users', path: ()=>this.$router.push('users'), showFor: [ 'super' ] },
+        // { icon: 'exit_to_app', title: 'Logout', path: ()=>this.logout(), showFor: [ 'all' ] },
       ]
     },
 
@@ -49,6 +54,10 @@
       logout(){
         alert('metal')
       },
+
+      pushTo(val){
+        this.$router.push('/' + val)
+      }
     },
 
     props: {

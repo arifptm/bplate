@@ -9,13 +9,14 @@
           <v-flex xs7>
             <v-text-field v-model="search" label="Cari" single-line hide-details class="pt-1" clearable></v-text-field>
           </v-flex>          
-        </v-layout>       
-        <v-data-table :headers="membersCol" :items="members" class="elevation-1">
-          <template v-slot:items="props">            
-            <td>{{ props.item.fullname }}</td>
-            <td class="text-xs-right">{{ toMoney(props.item.savingSum || 0) }}</td>
-            <td class="text-xs-right">{{ toMoney(props.item.debt || 0) }}</td>
-            <td class="text-xs-right">{{ toMoney(props.item.restSum || 0) }}</td>
+        </v-layout>
+        <v-data-table :headers="debtsCol" :items="debts" class="elevation-1">
+          <template v-slot:items="props">
+            <td class="">{{ dateField(props.item.Event.date) }}</td>
+            <td>{{ props.item.Member.fullname }}</td>
+            <td class="text-xs-right">{{ toMoney(props.item.amount) }}</td>
+            <td class="text-xs-right">{{ toMoney(props.item.paid) }}</td>
+            <td class="text-xs-right">{{ toMoney(props.item.rest) }}</td>            
           </template>
           <template v-slot:no-data>
             <v-btn color="primary" @click="">Reset</v-btn>
@@ -57,28 +58,31 @@
 
   export default {    
     data: () => ({
+      search: null,
       members:[],
       member: {},
       dlgMember: false,
-      apiUrl: process.env.VUE_APP_API_URL,      
-      membersCol: [        
-        { text: 'Nama Lengkap', align: 'left', value: 'fullname' },
-        { text: 'Tabungan', value: 'saving', align: 'right' },
-        { text: 'Pinjaman', value: 'paid', align: 'right' },
-        { text: 'Terhutang', value: 'rest', sortable: false, align: 'right' }
+      apiUrl: process.env.VUE_APP_API_URL,
+      debts:[],
+      debtsCol: [
+        { text: 'Tanggal', sortable: false, value: 'Event.date'},
+        { text: 'Nama', value: 'Member.fullname' },
+        { text: 'Hutang', value: 'amount', align: 'right' },
+        { text: 'Bayar', value: 'paid', align: 'right' },
+        { text: 'Sisa', value: 'rest', sortable: false, align: 'right' }
       ],
     }),
 
     created(){
-      this.getMembers()
+      this.getDebts()
   
     },
 
     methods:{
-      getMembers(){
-        this.axios.get('/members')
-        .then(members=>{
-          this.members = members.data
+      getDebts(){
+        this.axios.get('/debts')
+        .then(debts=>{
+          this.debts = debts.data
         })
       },
 
