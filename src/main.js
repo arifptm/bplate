@@ -9,23 +9,10 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 router.beforeEach(
   (to,from,next) => { 
     if(to.matched.some(record => record.meta.forPublic)){
-      if(store.state.user.token){
+      if(store.state.token){
         next({
           path: '/'
         }) 
@@ -33,7 +20,7 @@ router.beforeEach(
     } 
 
     else if(to.matched.some(record => record.meta.forAuth)){
-      if( ! store.state.user.token){
+      if( ! store.state.token){
         next({
           path: '/login'
         }) 
