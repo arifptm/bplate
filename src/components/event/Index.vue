@@ -13,10 +13,14 @@
         <v-data-table :headers="eventsCol" :items="events" class="elevation-1">
           <template v-slot:items="props">            
             <td>{{ dateField(props.item.date) }}</td>
-            <td>{{ toMoney(props.item.Member.fullname) }}</td>
+            <td>{{ props.item.Member.fullname }}</td>
             <td class="text-xs-right">{{ toMoney(props.item.debt || 0) }}</td>
             <td class="text-xs-right">{{ toMoney(props.item.saving || 0) }}</td>
-            <td class="text-xs-right">{{ toMoney(props.item.taken || 0) }}</td>
+            <td class="text-xs-right">{{ toMoney(props.item.other || 0) }}</td>
+            <td class="text-xs-right">{{ toMoney(props.item.cash || 0) }}</td>
+            <td class="text-xs-right">
+              <v-icon color="red" @click.stop="deleteEvent(props.item.id)">delete</v-icon>
+            </td>
           </template>
           <template v-slot:no-data>
             <v-btn color="primary" @click="">Reset</v-btn>
@@ -42,7 +46,8 @@
             <v-date-picker v-model="event.date" @input="menuDate = false"></v-date-picker>
           </v-menu>
 
-          <v-select :items="members" v-model="event.member_id" label="Nama" item-text="fullname" item-value="id"></v-select>  
+          <v-autocomplete :items="members" v-model="event.member_id" label="Nama" item-text="fullname" item-value="id"></v-autocomplete>  
+          <v-text-field label="Catatan" v-model="event.note"></v-text-field>
         </v-card-text>
 
         <v-card-actions>
@@ -65,7 +70,7 @@
   export default {    
     data: () => ({
       apiUrl: process.env.VUE_APP_API_URL,    
-      search:  null,
+      search:  '',
       events:[],
       event: {},
       members:[],
@@ -75,7 +80,9 @@
         { text: 'Tuan rumah', value: 'member' },
         { text: 'Pinjaman', value: 'debt', align: 'right' },
         { text: 'Tabungan', value: 'saving', align: 'right' },
-        { text: 'Saldo', value: '', align: 'right' }
+        { text: 'Lain-lain', value: 'other', align: 'right' },
+        { text: 'Saldo', value: '', align: 'right' },
+        { text: 'Hapus', value: '', align: 'right' }
       ],
       menuDate: false,
       dialogTitle: '',
@@ -84,7 +91,7 @@
 
     created(){
       this.getEvents()
-      this.getMembersName()
+      this.getMembersNameList()
   
     },
 
@@ -102,7 +109,7 @@
         })
       },
 
-      getMembersName(){
+      getMembersNameList(){
         this.axios.get('/members/name-list')
         .then(members=> this.members = members.data)
       },
@@ -113,18 +120,32 @@
       },
 
       save(){
-        this.axios.post('/events/create', this.event)
-        .then(()=> {
+        if(!this.event.id){
+          this.axios.post('/events/create', this.event)
+          .then(()=> {
+            this.getEvents()
+            this.closeDialog()
+          })
+          .catch(err => {
+            this.snackbar = { value:true, text: err.response.data }
+          })
+        } else {
+
+        }
+      },
+      
+      deleteEvent(id){
+        confirm('Yakin ?') && 
+        this.axios.delete('/events/'+ id)
+        .then(event=>{
+          this.snackbar = { value:true, text: "Pertemuan berhasil dihapus" }
           this.getEvents()
-          this.closeDialog()
-        })
-        .catch(err => {
-          this.snackbar = { value:true, text: err.response.data }
         })
       },
 
       closeDialog(){
         this.eventDialog = false
+        this.event = {}
       },
 
       dateField(date){

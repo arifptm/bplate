@@ -8,8 +8,10 @@ import Admin from './components/Admin.vue'
 
 import Event from './components/event/Index.vue'
 import Member from './components/member/Index.vue'
-import Debt from './components/debt/Index.vue'
 import Saving from './components/saving/Index.vue'
+import Debt from './components/debt/Index.vue'
+import Installment from './components/installment/Index.vue'
+import Inout from './components/inout/Index.vue'
 import Report from './components/report/Index.vue'
 
 Vue.use(Router)
@@ -26,8 +28,10 @@ export default new Router({
 
     { path: '/events', name: 'events', component: Event, meta: { forPublic: true, forAuth: true }},
     { path: '/members', name: 'members', component: Member, meta: { forPublic: true, forAuth: true }},
-    { path: '/debts', name: 'debts', component: Debt, meta: { forPublic: true, forAuth: true }},
     { path: '/savings', name: 'savings', component: Saving, meta: { forPublic: true, forAuth: true }},
+    { path: '/debts', name: 'debts', component: Debt, meta: { forPublic: true, forAuth: true }},
+    { path: '/installments', name: 'installments', component: Installment, meta: { forPublic: true, forAuth: true }},
+    { path: '/inouts', name: 'inouts', component: Inout, meta: { forPublic: true, forAuth: true }},
     { path: '/reports', name: 'reports', component: Report, meta: { forPublic: true, forAuth: true }}
 
     // {

@@ -10,13 +10,13 @@
             <v-text-field v-model="search" label="Cari" single-line hide-details class="pt-1" clearable></v-text-field>
           </v-flex>          
         </v-layout>
-        <v-data-table :headers="debtsCol" :items="debts" class="elevation-1" disable-initial-sort>
+        <v-data-table :headers="inoutsCol" :items="inouts" class="elevation-1">
           <template v-slot:items="props">
             <tr @click="edit(props.item)">
-              <td class="">{{ dateField(props.item.Event.date) }}</td>
-              <td>{{ props.item.Member.fullname }}</td>
-              <td class="text-xs-right">{{ toMoney(props.item.amount) }}</td>
-              <td class="text-xs-right">{{ toMoney(props.item.rest) }}</td>   
+              <td>{{ dateField(props.item.Debt.Event.date) }}</td>              
+              <td>{{ props.item.note }}</td>
+              <td class="text-xs-right">{{ (props.item.amount > 0) ? toMoney(props.item.amount) : '-' }}</td>   
+              <td class="text-xs-right">{{ (props.item.amount < 0) ? toMoney(props.item.amount * -1) : '-' }}</td>   
               <td class="text-xs-right">
                 <v-icon color="red" @click.stop="deleteDebt(props.item.id)">delete</v-icon>
               </td>   
@@ -71,31 +71,31 @@
       events:[],
       debtDialog: false,
       apiUrl: process.env.VUE_APP_API_URL,
-      debts:[],
-      debt:{},
-      debtsCol: [
-        { text: 'Tanggal', sortable: false, value: 'Event.date'},
-        { text: 'Nama', value: 'Member.fullname' },
-        { text: 'Hutang', value: 'amount', align: 'right' },
-        { text: 'Sisa', value: 'rest', align: 'right' },
-        { text: 'Hapus', value:"", align: 'right' }
+      inouts:[],
+      inout:{},
+      inoutsCol: [
+        { text: 'Tanggal', value: 'Debt.Event.date'},
+        { text: 'Keterangan', value: 'note' },
+        { text: 'Masuk', value: 'amount', align: 'right' },
+        { text: 'Keluar', value: 'amount', align: 'right' },
+        { text: 'Hapus', value: '', align: 'right' }
       ],
       dialogTitle: '',
       snackbar:{ value:false, text:''}
     }),
 
     created(){
-      this.getDebts()
+      this.getInouts()
       this.getMembersNameList()
       this.getEventDateList()
   
     },
 
     methods:{
-      getDebts(){
-        this.axios.get('/debts')
-        .then(debts=>{
-          this.debts = debts.data
+      getInouts(){
+        this.axios.get('/inouts')
+        .then(inouts=>{
+          this.inouts = inouts.data
         })
       },
 

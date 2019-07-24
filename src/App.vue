@@ -39,8 +39,10 @@
       this.menus = [
         { icon: 'people', title: 'Anggota', path: ()=>this.pushTo('members'), showFor: [ 'all' ] },
         { icon: 'event', title: 'Pertemuan', path: ()=>this.pushTo('events'), showFor: [ 'all' ] },
-        { icon: 'credit_card', title: 'Pinjaman', path: ()=>this.pushTo('debts'), showFor: [ 'all' ] },
         { icon: 'attach_money', title: 'Tabungan', path: ()=>this.pushTo('savings'), showFor: [ 'all' ] },
+        { icon: 'account_balance', title: 'Pinjaman', path: ()=>this.pushTo('debts'), showFor: [ 'all' ] },        
+        { icon: 'credit_card', title: 'Cicilan', path: ()=>this.pushTo('installments'), showFor: [ 'all' ] },
+        { icon: 'swap_vert', title: 'Dana masuk keluar', path: ()=>this.pushTo('inouts'), showFor: [ 'all' ] },
         { icon: 'assignment', title: 'Laporan', path: ()=>this.pushTo('reports'), showFor: [ 'all' ] },
         // { icon: 'volume_up', title: 'Dashboard', path: ()=>this.logout(), showFor: [ 'all' ] },
         // { icon: 'add', title: 'Account', path: ()=>this.logout(), showFor: [ 'super' ] },

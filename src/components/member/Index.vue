@@ -10,20 +10,49 @@
             <v-text-field v-model="search" label="Cari" single-line hide-details class="pt-1" clearable></v-text-field>
           </v-flex>          
         </v-layout>       
-        <v-data-table :headers="membersCol" :items="members" class="elevation-1">
+        <v-data-table :headers="membersCol" :items="members" class="elevation-1" :pagination.sync="pagination" hide-actions>
           <template v-slot:items="props">            
             <td>{{ props.item.fullname }}</td>
             <td class="text-xs-right">{{ toMoney(props.item.savingSum || 0) }}</td>
-            <td class="text-xs-right">{{ toMoney(props.item.debt || 0) }}</td>
+            <td class="text-xs-right">{{ toMoney(props.item.last_debt || 0) }}</td>
             <td class="text-xs-right">{{ toMoney(props.item.restSum || 0) }}</td>
           </template>
           <template v-slot:no-data>
             <v-btn color="primary" @click="">Reset</v-btn>
           </template>
         </v-data-table>    
+        <div class="text-xs-center pt-2">
+          <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+        </div>
 
       </v-flex>      
     </v-layout>
+
+
+<!--     <v-dialog v-model="dlgMember" scrollable  :overlay="false" max-width="500px" transition="dialog-transition" >
+      <v-card v-if="dlgMember">
+        <v-img class="white--text" height="200px" :src="apiUrl + '/static/members/' + member.image" circle>
+          <v-container fill-height fluid>
+            <v-layout fill-height>
+              <v-flex xs12 align-end flexbox>
+                <span class="headline" v-text="member.fullname"></span>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-img>
+        <v-card-title>
+          <div>            
+            <span>Whitehaven Beach</span><br>
+            <span>Whitsunday Island, Whitsunday Islands</span>
+          </div>
+        </v-card-title>
+        <v-card-actions>
+          <v-btn flat color="orange">Tutup</v-btn>
+        </v-card-actions>
+      </v-card>
+      
+    </v-dialog> -->
+
 
 <!--     <v-dialog v-model="dlgMember" scrollable  :overlay="false" max-width="500px" transition="dialog-transition" >
       <v-card v-if="dlgMember">
@@ -57,15 +86,20 @@
 
   export default {    
     data: () => ({
+      search: null,
       members:[],
       member: {},
+      pagination: {
+        rowsPerPage: 50,        
+        totalItems: 50,
+      },
       dlgMember: false,
       apiUrl: process.env.VUE_APP_API_URL,      
       membersCol: [        
         { text: 'Nama Lengkap', align: 'left', value: 'fullname' },
         { text: 'Tabungan', value: 'saving', align: 'right' },
         { text: 'Pinjaman', value: 'paid', align: 'right' },
-        { text: 'Terhutang', value: 'rest', sortable: false, align: 'right' }
+        { text: 'Terhutang', value: 'restSum', align: 'right' }
       ],
     }),
 
@@ -73,6 +107,16 @@
       this.getMembers()
   
     },
+
+   computed: {
+      pages () {
+        if (this.pagination.rowsPerPage == null ||
+          this.pagination.totalItems == null
+        ) return 0
+
+        return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
+      }
+    },    
 
     methods:{
       getMembers(){
