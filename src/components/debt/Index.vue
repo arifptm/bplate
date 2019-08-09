@@ -18,6 +18,7 @@
               <td class="text-xs-right">{{ toMoney(props.item.amount) }}</td>
               <td class="text-xs-right">{{ toMoney(props.item.rest) }}</td>   
               <td class="text-xs-right">
+                <v-icon color="red" @click.stop="deleteDebt(props.item.id)">attach_money</v-icon>
                 <v-icon color="red" @click.stop="deleteDebt(props.item.id)">delete</v-icon>
               </td>   
             </tr>
@@ -43,7 +44,7 @@
         <v-card-text>
           <v-select :items="events" v-model="debt.event_id" label="Tanggal" item-text="fDate" item-value="id"></v-select>
           <v-autocomplete :items="members" v-model="debt.member_id" label="Nama" item-text="fullname" item-value="id"></v-autocomplete>
-          <v-text-field label="Jumlah pinjaman" v-model="debt.amount"></v-text-field>
+          <v-text-field label="Jumlah pinjaman" v-model.number="debt.amount"></v-text-field>
           <v-text-field label="Kali Angsuran" v-model="debt.paytimes"></v-text-field>
         </v-card-text>
 
@@ -155,8 +156,13 @@
       edit(debt){
         this.dialogTitle = "Edit Pinjaman"
         this.debtDialog = true
-        Object.assign(this.debt, debt)
-        // this.debt.event_id = (this.events.sort().reverse())[0].id        
+        this.debt = {
+          id: debt.id,
+          event_id: debt.event_id,
+          member_id: debt.member_id,
+          amount : debt.amount,       
+          paytimes: debt.paytimes
+        }        
       },
 
       closeDialog(){

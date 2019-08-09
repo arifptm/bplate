@@ -13,7 +13,7 @@
         <v-data-table :headers="inoutsCol" :items="inouts" class="elevation-1">
           <template v-slot:items="props">
             <tr @click="edit(props.item)">
-              <td>{{ dateField(props.item.Debt.Event.date) }}</td>              
+              <td>{{ dateField(props.item.Event.date) }}</td>              
               <td>{{ props.item.note }}</td>
               <td class="text-xs-right">{{ (props.item.amount > 0) ? toMoney(props.item.amount) : '-' }}</td>   
               <td class="text-xs-right">{{ (props.item.amount < 0) ? toMoney(props.item.amount * -1) : '-' }}</td>   
@@ -74,7 +74,7 @@
       inouts:[],
       inout:{},
       inoutsCol: [
-        { text: 'Tanggal', value: 'Debt.Event.date'},
+        { text: 'Tanggal', value: 'Event.date'},
         { text: 'Keterangan', value: 'note' },
         { text: 'Masuk', value: 'amount', align: 'right' },
         { text: 'Keluar', value: 'amount', align: 'right' },

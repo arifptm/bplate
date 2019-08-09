@@ -13,10 +13,11 @@
     "moment": "^2.24.0",
     "register-service-worker": "^1.6.2",
     "roboto-fontface": "*",
+    "sass-loader": "^7.1.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vue-video-player": "^5.0.2",
-    "vuetify": "^1.5.5",
+    "vuetify": "^2.0.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

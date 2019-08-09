@@ -13,8 +13,8 @@
         <v-data-table :headers="membersCol" :items="members" class="elevation-1" :pagination.sync="pagination" hide-actions>
           <template v-slot:items="props">            
             <td>{{ props.item.fullname }}</td>
-            <td class="text-xs-right">{{ toMoney(props.item.savingSum || 0) }}</td>
-            <td class="text-xs-right">{{ toMoney(props.item.last_debt || 0) }}</td>
+            <td class="text-xs-right" @click.stop="getMemberSaving(props.item.id)">{{ toMoney(props.item.savingSum || 0) }}</td>
+            <td class="text-xs-right">{{ (props.item.Debts.length > 0) ? toMoney((props.item.Debts.filter(d=>d.debtSum != 0)[0]).amount) : 0 }}</td>
             <td class="text-xs-right">{{ toMoney(props.item.restSum || 0) }}</td>
           </template>
           <template v-slot:no-data>
@@ -78,6 +78,45 @@
       
     </v-dialog> -->
 
+
+    <v-dialog v-model="memberSavingDialog" scrollable  :overlay="false" max-width="500px" transition="dialog-transition" >
+      <v-card v-if="memberSavingDialog">        
+        <v-card-title >Tabungan <v-spacer></v-spacer> <v-icon @click="closeMemberSavingDialog()">close</v-icon></v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-simple-table>
+
+
+
+
+          <v-simple-table v-for="saving in memberSavings.Savings">
+                <thead>
+      <tr>
+        <th class="text-left">Name</th>
+        <th class="text-left">Calories</th>
+      </tr>
+    </thead>
+        <tbody>
+      <tr v-for="member.Savings in memberSaving" :key="item.name">
+        <td>{{ saving.Event.date }}</td>
+        <td>{{ saving.amount }}</td>
+      </tr>
+    </tbody>
+            
+          </v-simple-table>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn flat color="orange">Tutup</v-btn>
+        </v-card-actions>
+      </v-card>
+      
+    </v-dialog>
+
+
+    <v-snackbar v-model="snackbar.value" > {{ snackbar.text }}
+      <v-btn flat color="primary" @click.native="snackbar.value = false">Close</v-btn>
+    </v-snackbar>
+
   </v-container>
 </template>
 
@@ -86,6 +125,8 @@
 
   export default {    
     data: () => ({
+      memberSavingDialog: false,
+      memberSavings:[],
       search: null,
       members:[],
       member: {},
@@ -101,6 +142,7 @@
         { text: 'Pinjaman', value: 'paid', align: 'right' },
         { text: 'Terhutang', value: 'restSum', align: 'right' }
       ],
+      snackbar:{ value:false, text:''}
     }),
 
     created(){
@@ -123,6 +165,15 @@
         this.axios.get('/members')
         .then(members=>{
           this.members = members.data
+        })
+      },
+
+      getMemberSaving(id){
+        this.axios.get("/members/"+id+"/savings")
+        .then(res=>{
+          console.log(res.data)
+          this.memberSavings= res.data
+          this.memberSavingDialog = true
         })
       },
 
